@@ -16,6 +16,7 @@ export enum PreferenceName {
   GenerationSuccessSound = "generation_success_sound",
   GenerationFailureSound = "generation_failure_sound",
   GenerationEnqueueSound = "generation_enqueue_sound",
+  N8nWebhookUrl = "n8n_webhook_url",
 }
 
 export interface UpdateAppPreferencesResult {

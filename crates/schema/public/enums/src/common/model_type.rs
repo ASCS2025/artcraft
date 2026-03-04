@@ -56,6 +56,9 @@ pub enum ModelType {
   #[serde(rename = "seedream_5_lite")]
   Seedream5Lite,
 
+  #[serde(rename = "n8n_webhook")]
+  N8nWebhook,
+
   /// Midjourney without distinguishing a model type or version
   #[serde(rename = "midjourney")]
   Midjourney,
@@ -153,6 +156,7 @@ impl ModelType {
       Self::Seedream4 => "seedream_4",
       Self::Seedream4p5 => "seedream_4p5",
       Self::Seedream5Lite => "seedream_5_lite",
+      Self::N8nWebhook => "n8n_webhook",
       Self::Midjourney => "midjourney",
       Self::MidjourneyV6 => "midjourney_v6",
       Self::MidjourneyV6p1 => "midjourney_v6p1",
@@ -210,6 +214,7 @@ impl ModelType {
       "seedream_4" => Ok(Self::Seedream4),
       "seedream_4p5" => Ok(Self::Seedream4p5),
       "seedream_5_lite" => Ok(Self::Seedream5Lite),
+      "n8n_webhook" => Ok(Self::N8nWebhook),
       "midjourney" => Ok(Self::Midjourney),
       "midjourney_v6" => Ok(Self::MidjourneyV6),
       "midjourney_v6p1" => Ok(Self::MidjourneyV6p1),
@@ -271,6 +276,7 @@ impl ModelType {
       Self::Seedream4,
       Self::Seedream4p5,
       Self::Seedream5Lite,
+      Self::N8nWebhook,
       Self::Midjourney,
       Self::MidjourneyV6,
       Self::MidjourneyV6p1,
@@ -337,6 +343,7 @@ mod tests {
       assert_serialization(ModelType::Seedream4, "seedream_4");
       assert_serialization(ModelType::Seedream4p5, "seedream_4p5");
       assert_serialization(ModelType::Seedream5Lite, "seedream_5_lite");
+      assert_serialization(ModelType::N8nWebhook, "n8n_webhook");
       assert_serialization(ModelType::Midjourney, "midjourney");
       assert_serialization(ModelType::MidjourneyV6, "midjourney_v6");
       assert_serialization(ModelType::MidjourneyV6p1, "midjourney_v6p1");
@@ -391,6 +398,7 @@ mod tests {
       assert_eq!(ModelType::Seedream4.to_str(), "seedream_4");
       assert_eq!(ModelType::Seedream4p5.to_str(), "seedream_4p5");
       assert_eq!(ModelType::Seedream5Lite.to_str(), "seedream_5_lite");
+      assert_eq!(ModelType::N8nWebhook.to_str(), "n8n_webhook");
       assert_eq!(ModelType::Midjourney.to_str(), "midjourney");
       assert_eq!(ModelType::MidjourneyV6.to_str(), "midjourney_v6");
       assert_eq!(ModelType::MidjourneyV6p1.to_str(), "midjourney_v6p1");
@@ -447,6 +455,7 @@ mod tests {
       assert_eq!(ModelType::from_str("seedream_4").unwrap(), ModelType::Seedream4);
       assert_eq!(ModelType::from_str("seedream_4p5").unwrap(), ModelType::Seedream4p5);
       assert_eq!(ModelType::from_str("seedream_5_lite").unwrap(), ModelType::Seedream5Lite);
+      assert_eq!(ModelType::from_str("n8n_webhook").unwrap(), ModelType::N8nWebhook);
       assert_eq!(ModelType::from_str("midjourney").unwrap(), ModelType::Midjourney);
       assert_eq!(ModelType::from_str("midjourney_v6").unwrap(), ModelType::MidjourneyV6);
       assert_eq!(ModelType::from_str("midjourney_v6p1").unwrap(), ModelType::MidjourneyV6p1);
@@ -482,7 +491,7 @@ mod tests {
     #[test]
     fn all_variants() {
       let mut variants = ModelType::all_variants();
-      assert_eq!(variants.len(), 47);
+      assert_eq!(variants.len(), 48);
       // Image models
       assert_eq!(variants.pop_first(), Some(ModelType::Flux1Dev));
       assert_eq!(variants.pop_first(), Some(ModelType::Flux1Schnell));
@@ -504,6 +513,7 @@ mod tests {
       assert_eq!(variants.pop_first(), Some(ModelType::Seedream4));
       assert_eq!(variants.pop_first(), Some(ModelType::Seedream4p5));
       assert_eq!(variants.pop_first(), Some(ModelType::Seedream5Lite));
+      assert_eq!(variants.pop_first(), Some(ModelType::N8nWebhook));
       assert_eq!(variants.pop_first(), Some(ModelType::Midjourney));
       assert_eq!(variants.pop_first(), Some(ModelType::MidjourneyV6));
       assert_eq!(variants.pop_first(), Some(ModelType::MidjourneyV6p1));

@@ -78,8 +78,22 @@ export const MiscSettingsPane = (args: MiscSettingsPaneProps) => {
     await DownloadDirectoryReveal();
   };
 
+  const [n8nWebhookUrl, setN8nWebhookUrl] = useState<string>(preferences?.n8n_webhook_url || "");
+
+  useEffect(() => {
+    setN8nWebhookUrl(preferences?.n8n_webhook_url || "");
+  }, [preferences]);
+
+  const saveN8nWebhookUrl = async () => {
+    await UpdateAppPreferences({
+      preference: PreferenceName.N8nWebhookUrl,
+      value: n8nWebhookUrl || undefined,
+    });
+    await reloadPreferences();
+  };
+
   return (
-    <div className="space-y-4 text-base-fg">
+    <div className="space-y-6 text-base-fg">
       <div className="space-y-2">
         <Label htmlFor="download-path">Default Download Directory</Label>
         <p className="opacity-80">
@@ -102,6 +116,26 @@ export const MiscSettingsPane = (args: MiscSettingsPaneProps) => {
         <Button variant="secondary" onClick={showDirectory}>
           <FontAwesomeIcon icon={faMagnifyingGlass} />
           Show Directory
+        </Button>
+      </div>
+
+      <hr className="border-ui-panel-border" />
+
+      <div className="space-y-2">
+        <Label htmlFor="n8n-webhook-url">N8n Webhook URL</Label>
+        <p className="opacity-80">
+          Set a webhook URL to use the N8n Webhook model for image generation.
+        </p>
+        <input
+          id="n8n-webhook-url"
+          type="text"
+          value={n8nWebhookUrl}
+          onChange={(e) => setN8nWebhookUrl(e.target.value)}
+          placeholder="https://your-n8n-instance.com/webhook/..."
+          className="w-full py-1.5 px-2 rounded-md bg-ui-panel border border-ui-panel-border text-base-fg"
+        />
+        <Button variant="primary" onClick={saveN8nWebhookUrl}>
+          Save
         </Button>
       </div>
     </div>

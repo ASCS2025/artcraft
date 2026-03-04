@@ -38,6 +38,9 @@ pub struct AppPreferencesPayload {
   /// Key pointing to file; defined in the frontend code.
   #[deprecated]
   pub generation_enqueue_sound: Option<String>,
+
+  /// N8n webhook URL for image generation.
+  pub n8n_webhook_url: Option<String>,
 }
 
 
@@ -70,5 +73,6 @@ async fn get_prefs(app_prefs: &AppPreferencesManager) -> AnyhowResult<AppPrefere
     generation_success_sound: prefs.generation_success_sound,
     generation_failure_sound: prefs.generation_failure_sound,
     generation_enqueue_sound: prefs.generation_enqueue_sound,
+    n8n_webhook_url: prefs.n8n_webhook_url,
   })
 }

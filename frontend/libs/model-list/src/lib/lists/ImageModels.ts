@@ -9,6 +9,26 @@ import { CommonResolution } from "../classes/properties/CommonResolution.js";
 
 export const IMAGE_MODELS: ImageModel[] = [
   new ImageModel({
+    id: "n8n_webhook",
+    tauriId: "n8n_webhook",
+    fullName: "N8n Webhook",
+    category: "image",
+    creator: ModelCreator.ArtCraft,
+    providers: [
+      GenerationProvider.N8n,
+    ],
+    selectorName: "N8n Webhook",
+    selectorDescription: "Your own n8n webhook",
+    selectorBadges: ["Custom"],
+    defaultGenerationCount: 1,
+    maxGenerationCount: 1,
+    predefinedGenerationCounts: [1],
+    canUseImagePrompt: false,
+    maxImagePromptCount: 0,
+    progressBarTime: 30000,
+    canChangeAspectRatio: false,
+  }),
+  new ImageModel({
     id: "grok_image",
     tauriId: "grok_image",
     fullName: "Grok",

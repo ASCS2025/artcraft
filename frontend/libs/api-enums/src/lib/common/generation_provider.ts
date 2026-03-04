@@ -6,6 +6,7 @@ export enum GenerationProvider {
   Artcraft = "artcraft",
   Grok = "grok",
   Midjourney = "midjourney",
+  N8n = "n8n",
   Sora = "sora",
   WorldLabs = "world_labs",
   // NB: We should build our own open source Fal

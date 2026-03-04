@@ -4,4 +4,5 @@ pub mod enqueue_text_to_image_command;
 mod artcraft;
 mod grok;
 mod midjourney;
+mod n8n;
 mod sora;

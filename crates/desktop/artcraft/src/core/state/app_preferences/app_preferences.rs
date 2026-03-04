@@ -30,6 +30,9 @@ pub struct AppPreferences {
   /// Key pointing to file; defined in the frontend code.
   #[deprecated]
   pub generation_enqueue_sound: Option<String>,
+
+  /// N8n webhook URL for image generation.
+  pub n8n_webhook_url: Option<String>,
 }
 
 impl Default for AppPreferences {
@@ -44,6 +47,7 @@ impl Default for AppPreferences {
       generation_failure_sound: Some("crumble".to_string()),
       generation_enqueue_sound: Some("done".to_string()),
       delete_file_sound: Some("trash".to_string()),
+      n8n_webhook_url: None,
     }
   }
 }

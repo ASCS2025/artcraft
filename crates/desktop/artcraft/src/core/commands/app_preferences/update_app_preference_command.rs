@@ -33,6 +33,7 @@ pub enum PreferenceName {
   EnqueueFailureSound,
   GenerationSuccessSound,
   GenerationFailureSound,
+  N8nWebhookUrl,
 }
 
 #[derive(Serialize)]
@@ -108,6 +109,11 @@ async fn update_prefs(
     }
     PreferenceName::GenerationFailureSound => {
       prefs.generation_failure_sound = request.value
+          .map(|val| string_value(&val))
+          .transpose()?;
+    }
+    PreferenceName::N8nWebhookUrl => {
+      prefs.n8n_webhook_url = request.value
           .map(|val| string_value(&val))
           .transpose()?;
     }

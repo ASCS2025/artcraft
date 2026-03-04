@@ -18,6 +18,7 @@ pub fn text_to_image_model_to_model_type(model: TextToImageModel) -> ModelType {
     TextToImageModel::Seedream4 => ModelType::Seedream4,
     TextToImageModel::Seedream4p5 => ModelType::Seedream4p5,
     TextToImageModel::Seedream5Lite => ModelType::Seedream5Lite,
+    TextToImageModel::N8nWebhook => ModelType::N8nWebhook,
     TextToImageModel::Midjourney => ModelType::Midjourney,
   }
 }

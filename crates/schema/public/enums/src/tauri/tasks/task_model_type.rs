@@ -50,6 +50,9 @@ pub enum TaskModelType {
   #[serde(rename = "recraft_3")]
   Recraft3,
   
+  #[serde(rename = "n8n_webhook")]
+  N8nWebhook,
+
   // Generic Midjourney model, version unknown.
   #[serde(rename = "midjourney")]
   Midjourney,
@@ -125,6 +128,7 @@ impl TaskModelType {
       Self::Seedream5Lite => "seedream_5_lite",
       Self::GrokImage => "grok_image",
       Self::Recraft3 => "recraft_3",
+      Self::N8nWebhook => "n8n_webhook",
       Self::Midjourney => "midjourney",
       // Video models
       Self::GrokVideo => "grok_video",
@@ -171,6 +175,7 @@ impl TaskModelType {
       "seedream_5_lite" => Ok(Self::Seedream5Lite),
       "grok_image" => Ok(Self::GrokImage),
       "recraft_3" => Ok(Self::Recraft3),
+      "n8n_webhook" => Ok(Self::N8nWebhook),
       "midjourney" => Ok(Self::Midjourney),
       // Video models
       "grok_video" => Ok(Self::GrokVideo),
@@ -220,6 +225,7 @@ impl TaskModelType {
       Self::Seedream5Lite,
       Self::GrokImage,
       Self::Recraft3,
+      Self::N8nWebhook,
       Self::Midjourney,
       // Video models
       Self::GrokVideo,
@@ -276,6 +282,7 @@ mod tests {
       assert_serialization(TaskModelType::Seedream5Lite, "seedream_5_lite");
       assert_serialization(TaskModelType::GrokImage, "grok_image");
       assert_serialization(TaskModelType::Recraft3, "recraft_3");
+      assert_serialization(TaskModelType::N8nWebhook, "n8n_webhook");
       assert_serialization(TaskModelType::Midjourney, "midjourney");
       // Video models
       assert_serialization(TaskModelType::GrokVideo, "grok_video");
@@ -321,6 +328,7 @@ mod tests {
       assert_eq!(TaskModelType::Seedream5Lite.to_str(), "seedream_5_lite");
       assert_eq!(TaskModelType::GrokImage.to_str(), "grok_image");
       assert_eq!(TaskModelType::Recraft3.to_str(), "recraft_3");
+      assert_eq!(TaskModelType::N8nWebhook.to_str(), "n8n_webhook");
       assert_eq!(TaskModelType::Midjourney.to_str(), "midjourney");
       // Video models
       assert_eq!(TaskModelType::GrokVideo.to_str(), "grok_video");
@@ -366,6 +374,7 @@ mod tests {
       assert_eq!(TaskModelType::from_str("seedream_5_lite").unwrap(), TaskModelType::Seedream5Lite);
       assert_eq!(TaskModelType::from_str("grok_image").unwrap(), TaskModelType::GrokImage);
       assert_eq!(TaskModelType::from_str("recraft_3").unwrap(), TaskModelType::Recraft3);
+      assert_eq!(TaskModelType::from_str("n8n_webhook").unwrap(), TaskModelType::N8nWebhook);
       assert_eq!(TaskModelType::from_str("midjourney").unwrap(), TaskModelType::Midjourney);
       // Video models
       assert_eq!(TaskModelType::from_str("grok_video").unwrap(), TaskModelType::GrokVideo);
@@ -404,7 +413,7 @@ mod tests {
     #[test]
     fn all_variants() {
       let mut variants = TaskModelType::all_variants();
-      assert_eq!(variants.len(), 38);
+      assert_eq!(variants.len(), 39);
       // Image models
       assert_eq!(variants.pop_first(), Some(TaskModelType::Flux1Dev));
       assert_eq!(variants.pop_first(), Some(TaskModelType::Flux1Schnell));
@@ -424,6 +433,7 @@ mod tests {
       assert_eq!(variants.pop_first(), Some(TaskModelType::Seedream5Lite));
       assert_eq!(variants.pop_first(), Some(TaskModelType::GrokImage));
       assert_eq!(variants.pop_first(), Some(TaskModelType::Recraft3));
+      assert_eq!(variants.pop_first(), Some(TaskModelType::N8nWebhook));
       assert_eq!(variants.pop_first(), Some(TaskModelType::Midjourney));
       // Video models
       assert_eq!(variants.pop_first(), Some(TaskModelType::GrokVideo));

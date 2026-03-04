@@ -7,6 +7,7 @@ use crate::core::commands::enqueue::task_enqueue_success::TaskEnqueueSuccess;
 use crate::core::commands::enqueue::text_to_image::artcraft::handle_text_to_image_artcraft::handle_text_to_image_artcraft;
 use crate::core::commands::enqueue::text_to_image::grok::handle_grok::handle_grok;
 use crate::core::commands::enqueue::text_to_image::midjourney::handle_midjourney::handle_midjourney;
+use crate::core::commands::enqueue::text_to_image::n8n::handle_n8n::handle_n8n;
 use crate::core::commands::enqueue::text_to_image::sora::handle_text_to_image_sora::handle_text_to_image_sora;
 use crate::core::commands::enqueue::text_to_image::text_to_image_models::text_to_image_model_to_model_type;
 use crate::core::commands::response::failure_response_wrapper::{CommandErrorResponseWrapper, CommandErrorStatus};
@@ -18,6 +19,7 @@ use crate::core::events::generation_events::common::{GenerationAction, Generatio
 use crate::core::events::generation_events::generation_enqueue_success_event::GenerationEnqueueSuccessEvent;
 use crate::core::events::sendable_event_trait::SendableEvent;
 use crate::core::state::app_env_configs::app_env_configs::AppEnvConfigs;
+use crate::core::state::app_preferences::app_preferences_manager::AppPreferencesManager;
 use crate::core::state::artcraft_usage_tracker::artcraft_usage_tracker::ArtcraftUsageTracker;
 use crate::core::state::artcraft_usage_tracker::artcraft_usage_type::{ArtcraftUsagePage, ArtcraftUsageType};
 use crate::core::state::data_dir::app_data_root::AppDataRoot;
@@ -75,6 +77,9 @@ pub enum TextToImageModel {
   Seedream4p5,
   #[serde(rename = "seedream_5_lite")]
   Seedream5Lite,
+
+  #[serde(rename = "n8n_webhook")]
+  N8nWebhook,
 
   // Generic Midjourney model, version unknown.
   #[serde(rename = "midjourney")]
@@ -200,6 +205,7 @@ pub async fn enqueue_text_to_image_command(
   storyteller_creds_manager: State<'_, StorytellerCredentialManager>,
   sora_creds_manager: State<'_, SoraCredentialManager>,
   sora_task_queue: State<'_, SoraTaskQueue>,
+  app_prefs: State<'_, AppPreferencesManager>,
 ) -> Response<EnqueueTextToImageSuccessResponse, EnqueueTextToImageErrorType, ()> {
 
   info!("enqueue_text_to_image called");
@@ -220,6 +226,7 @@ pub async fn enqueue_text_to_image_command(
     &app_env_configs,
     &sora_creds_manager,
     &sora_task_queue,
+    &app_prefs,
   ).await;
 
   match result {
@@ -291,6 +298,7 @@ pub async fn handle_request(
   app_env_configs: &AppEnvConfigs,
   sora_creds_manager: &SoraCredentialManager,
   sora_task_queue: &SoraTaskQueue,
+  app_prefs: &AppPreferencesManager,
 ) -> Result<TaskEnqueueSuccess, GenerateError> {
   
   let result = dispatch_request(
@@ -305,6 +313,8 @@ pub async fn handle_request(
     &grok_image_prompt_queue,
     &sora_creds_manager,
     &sora_task_queue,
+    &app_prefs,
+    &task_database,
   ).await;
   
   let success_event = match result {
@@ -359,6 +369,8 @@ pub async fn dispatch_request(
   grok_image_prompt_queue: &GrokImagePromptQueue,
   sora_creds_manager: &SoraCredentialManager,
   sora_task_queue: &SoraTaskQueue,
+  app_prefs: &AppPreferencesManager,
+  task_database: &TaskDatabase,
 ) -> Result<TaskEnqueueSuccess, GenerateError> {
 
   let model = match request.model {
@@ -371,6 +383,7 @@ pub async fn dispatch_request(
   let provider = match (model, request.provider) {
     (TextToImageModel::GrokImage, _) => GenerationProvider::Grok,
     (TextToImageModel::Midjourney, _) => GenerationProvider::Midjourney,
+    (TextToImageModel::N8nWebhook, _) => GenerationProvider::N8n,
     _ => request.provider.unwrap_or(GenerationProvider::Artcraft),
   };
 
@@ -402,6 +415,15 @@ pub async fn dispatch_request(
         request,
         app_env_configs,
         mj_creds_manager,
+      ).await
+    }
+    GenerationProvider::N8n => {
+      handle_n8n(
+        app,
+        request,
+        app_prefs,
+        app_data_root,
+        task_database,
       ).await
     }
     GenerationProvider::Sora => {

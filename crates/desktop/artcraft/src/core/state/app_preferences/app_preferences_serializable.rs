@@ -36,6 +36,10 @@ pub struct AppPreferencesSerializable {
   /// Key pointing to file; defined in the frontend code.
   #[serde(skip_serializing_if = "Option::is_none")]
   pub generation_enqueue_sound: Option<String>,
+
+  /// N8n webhook URL for image generation.
+  #[serde(skip_serializing_if = "Option::is_none")]
+  pub n8n_webhook_url: Option<String>,
 }
 
 impl AppPreferencesSerializable {
@@ -59,6 +63,7 @@ impl AppPreferencesSerializable {
       generation_success_sound: preferences.generation_success_sound.clone(),
       generation_failure_sound: preferences.generation_failure_sound.clone(),
       generation_enqueue_sound: preferences.generation_enqueue_sound.clone(),
+      n8n_webhook_url: preferences.n8n_webhook_url.clone(),
     }
   }
 
@@ -77,6 +82,7 @@ impl AppPreferencesSerializable {
     preferences.generation_success_sound = self.generation_success_sound.clone();
     preferences.generation_failure_sound = self.generation_failure_sound.clone();
     preferences.generation_enqueue_sound = self.generation_enqueue_sound.clone();
+    preferences.n8n_webhook_url = self.n8n_webhook_url.clone();
 
     preferences
   }

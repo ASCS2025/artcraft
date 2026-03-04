@@ -35,6 +35,7 @@ impl TaskEnqueueSuccess{
       GenerationProvider::Fal => GenerationServiceProvider::Fal,
       GenerationProvider::Grok => GenerationServiceProvider::Grok,
       GenerationProvider::Midjourney => GenerationServiceProvider::Midjourney,
+      GenerationProvider::N8n => GenerationServiceProvider::N8n,
       GenerationProvider::Sora => GenerationServiceProvider::Sora,
       GenerationProvider::WorldLabs => GenerationServiceProvider::WorldLabs,
     }
@@ -96,6 +97,7 @@ impl TaskEnqueueSuccess{
       Some(GenerationModel::Hunyuan3d2_1) => Some(TaskModelType::Hunyuan3d2_1),
       Some(GenerationModel::Hunyuan3d3) => Some(TaskModelType::Hunyuan3d3),
       Some(GenerationModel::WorldlabsMarble) => Some(TaskModelType::WorldlabsMarble),
+      Some(GenerationModel::N8nWebhook) => Some(TaskModelType::N8nWebhook),
       Some(GenerationModel::Midjourney) => Some(TaskModelType::Midjourney), // NB: This is a generic Midjourney model, version unknown.
 
       // TODO: These seem wrong -
